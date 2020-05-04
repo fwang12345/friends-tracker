@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const path = require('path');
 
 require('dotenv').config();
 
@@ -22,10 +23,10 @@ const userRouter = require('./routes/user.js');
 app.use('/user', userRouter);
 
 if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('../build'));
+  app.use(express.static('client/build'));
 
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
 
