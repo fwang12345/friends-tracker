@@ -1,34 +1,128 @@
 const router = require('express').Router();
-let User = require('../models/user');
+const User = require('../models/user');
+const Session = require('../models/session')
 
-router.route('/find/:username/').get((req, res) => {
-  User.find({username: req.params.username})
-    .then(users => {
-      console.log(users)
-      res.json(users)
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
-router.route('/:username/:password').get((req, res) => {
-  User.find({username: req.params.username, password: req.params.password})
-    .then(users => {
-      console.log(users)
-      res.json(users)
-    })
-    .catch(err => res.status(400).json('Error: ' + err));
-});
-
-router.route('/').post((req, res) => {
-  console.log(req.body.username)
-  const newUser = new User({
-    username: req.body.username,
-    password: req.body.password
+router.route('/login').post((req, res) => {
+  const {username, password} = req.body;
+  User.findOne({ username: username}, (err, user) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Error: Server error'
+      })
+    } else if (user) {
+      if (user.validPassword(password)) {
+        const newSession = new Session({
+          userId: user._id
+        })
+        newSession.save((err, ses) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: 'Error: Server error'
+            })
+          } else {
+            return res.send({
+              success: true,
+              message: 'Successfully logged in',
+              token: ses._id
+            })
+          }
+        })
+      } else {
+        return res.send({
+          success: false,
+          message: 'Incorrect password'
+        })
+      }
+    } else {
+      return res.send({
+        success: false,
+        message: 'Error: User does not exist'
+      })
+    }
+    console.log(user)
   })
+});
 
-  newUser.save()
-    .then(() => res.json('User added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+router.route('/signup').post((req, res) => {
+  const {username, password} = req.body;
+  User.find({ username: username }, (err, users) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Error: Server error'
+      })
+    } else if (users.length) {
+      return res.send({
+        success: false,
+        message: 'Error: Username taken'
+      })
+    } else {
+      var newUser = new User({
+        username: req.body.username
+      })
+      newUser.password = newUser.generateHash(password);
+    
+      newUser.save((err, user) => {
+        if (err) {
+          return res.send({
+            success: false,
+            message: 'Error: Server error'
+          })
+        } else {
+          return res.send({
+            success: true,
+            message: 'Account successfully created'
+          })
+        }
+      })
+    }
+  });
+});
+
+router.route('/verify').post((req, res) => {
+  const {token} = req.body;
+  Session.findOne({ 
+    _id: token,
+    active: true
+  }, (err, ses) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Error: Server error'
+      })
+    } else {
+      return res.send({
+        success: true,
+        message: 'Successfully verified',
+        token: ses._id
+      })
+    }
+  });
+});
+
+router.route('/logout').post((req, res) => {
+  const {token} = req.body;
+  Session.findOneAndUpdate({ 
+    _id: token,
+    active: true
+  }, {
+    $set: {active: false}
+  }, (err, ses) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Error: Server error'
+      })
+    } else {
+      return res.send({
+        success: true,
+        message: 'Successfully logged out',
+        token: ses._id
+      })
+    }
+  });
 });
 
 module.exports = router;

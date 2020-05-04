@@ -9,11 +9,16 @@ export default class Login extends Component {
         this.state = {
             username: '',
             password: '',
-            disabled: true
+            disabled: true,
+            session: false,
+            token: ''
         }
         this.change = this.change.bind(this)
         this.submit = this.submit.bind(this)
         this.onSubmit = onSubmit
+    }
+    componentDidMount() {
+        console.log(localStorage.setItem('Frankie', 'sup'));
     }
 
     /**
@@ -38,9 +43,15 @@ export default class Login extends Component {
         var username = this.state.username;
         var password = this.state.password;
         this.setState({ username: '', password: '', disabled: true })
-        axios.get('http://localhost:5000/user/' + username + '/' + password).then(res => {
-            console.log(res.data)
-
+        axios.post('http://localhost:5000/user/login', {
+            username: username,
+            password: password
+        }).then(res => {
+            if (res.data.success) {
+                console.log(res.data)
+            } else {
+                alert(res.data.message)
+            }
         }).catch(err => console.log(err));
     }
 

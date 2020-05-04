@@ -15,6 +15,9 @@ export default class Signup extends Component {
         this.submit = this.submit.bind(this)
         this.onSubmit = onSubmit
     }
+    componentDidMount() {
+        console.log(localStorage.getItem('Frankie'));
+    }
 
     /**
      * Updates state and checks if button should be enabled
@@ -40,19 +43,18 @@ export default class Signup extends Component {
         e.preventDefault()
         const { username, password, verify, _ } = this.state
         if (password === verify) {
-            axios.get('http://localhost:5000/user/find/'+username).then(res => {
-                if (res.data.length) {
-                    alert('Username taken');
-                } else {
-                    axios.post('http://localhost:5000/user', {
-                        username: username,
-                        password: password
-                    }).then(_ => this.props.history.push('/'))
-                    .catch(err => console.log(err));
-                }
-
+            axios.post('http://localhost:5000/user/signup', {
+                username: username,
+                password: password
             })
-            .catch(err => console.log(err));
+            .then(res => {
+                if (res.data.success) {
+                    this.props.history.push('/');
+                } else {
+                    alert(res.data.message)
+                }
+            })
+            .catch(err => console.log(err))
         } else {
             alert("Passwords do not match");
         }
