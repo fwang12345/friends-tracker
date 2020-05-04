@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
 const path = require('path');
+const proxy = require('http-proxy-middleware')
 
 require('dotenv').config();
 
@@ -33,3 +34,8 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(port, () => {
     console.log(`Server is running on port: ${port}`);
 });
+
+module.exports = function(app) {
+  // add other server routes to path array
+  app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
+}
