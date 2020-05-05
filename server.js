@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 const uri = 'mongodb+srv://frankiewang:Uw1FzTeVkn5iRgVu@user-irypa.mongodb.net/CIS197?retryWrites=true&w=majority';
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false}
 );
 const connection = mongoose.connection;
 connection.once('open', () => {

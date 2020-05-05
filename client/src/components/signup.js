@@ -15,9 +15,6 @@ export default class Signup extends Component {
         this.submit = this.submit.bind(this)
         this.onSubmit = onSubmit
     }
-    componentDidMount() {
-        console.log(localStorage.getItem('Frankie'));
-    }
 
     /**
      * Updates state and checks if button should be enabled
@@ -25,7 +22,7 @@ export default class Signup extends Component {
      */
     change(e) {
         var placeholder = e.target.placeholder
-        const { username, password, verify, _ } = this.state
+        const { username, password, verify } = this.state
         if (placeholder === 'username') {
             this.setState({ username: e.target.value, disabled: !e.target.value || !password || !verify})
         } else if (placeholder === 'password') {
@@ -41,7 +38,7 @@ export default class Signup extends Component {
      */
     submit(e) {
         e.preventDefault()
-        const { username, password, verify, _ } = this.state
+        const { username, password, verify } = this.state
         if (password === verify) {
             axios.post('http://localhost:5000/user/signup', {
                 username: username,

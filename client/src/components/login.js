@@ -10,7 +10,6 @@ export default class Login extends Component {
             username: '',
             password: '',
             disabled: true,
-            session: false,
             token: ''
         }
         this.change = this.change.bind(this)
@@ -18,7 +17,10 @@ export default class Login extends Component {
         this.onSubmit = onSubmit
     }
     componentDidMount() {
-        console.log(localStorage.setItem('Frankie', 'sup'));
+        const token = localStorage.getItem('token');
+        if (token) {
+            this.props.history.push('/home');
+        }
     }
 
     /**
@@ -48,7 +50,9 @@ export default class Login extends Component {
             password: password
         }).then(res => {
             if (res.data.success) {
-                console.log(res.data)
+                localStorage.setItem('token', res.data.username);
+                console.log(localStorage.getItem('token'))
+                this.props.history.push('/home')
             } else {
                 alert(res.data.message)
             }

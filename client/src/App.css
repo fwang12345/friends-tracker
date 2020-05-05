@@ -7,7 +7,6 @@ background-repeat: no-repeat;
 height: 100%;
 font-family: 'Numans', sans-serif;
 }
-
 .container{
 margin-top: 50px;
 height: 100%;
@@ -22,6 +21,9 @@ width: 400px;
 background-color: rgba(0,0,0,0.5) !important;
 }
 
+.float-right .btn {
+    padding: 2px 0.5rem;
+}
 .social_icon span{
 font-size: 60px;
 margin-left: 10px;
@@ -89,4 +91,18 @@ margin-left: 4px;
 
 .nav-link {
     padding: 0px;
+}
+.navbar-dark .navbar-nav .nav-link {
+    color:#fff;
+}
+
+.mx-auto {
+    padding: 0px;
+}
+.input-group-text {
+    padding: .65rem .75rem;
+}
+
+.prepend {
+    padding: .36rem .20rem;
 }
