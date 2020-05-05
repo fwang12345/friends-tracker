@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import url from '../Constants'
 
 export default class Login extends Component {
     constructor(props) {
@@ -45,7 +46,7 @@ export default class Login extends Component {
         var username = this.state.username;
         var password = this.state.password;
         this.setState({ username: '', password: '', disabled: true })
-        axios.post('/user/login', {
+        axios.post(url.API_URL+'/user/login', {
             username: username,
             password: password
         }).then(res => {

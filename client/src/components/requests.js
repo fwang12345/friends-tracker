@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from './navbar'
 import axios from 'axios'
-
+import url from '../Constants'
 export default class Requests extends Component {
     constructor(props) {
         super(props)
@@ -14,7 +14,7 @@ export default class Requests extends Component {
     componentDidMount() {
         const token = localStorage.getItem('token')
         if (token) {
-            axios.post('http://localhost:5000/user/find', {
+            axios.post(url.API_URL+'/user/find', {
                 username: token
             }).then(user => {
                 if (user.data.success) {
@@ -32,7 +32,7 @@ export default class Requests extends Component {
     accept(e) {
         const username = e.target.id;
         const token = localStorage.getItem('token')
-        axios.post('http://localhost:5000/user/accept', {
+        axios.post(url.API_URL+'/user/accept', {
             username: username,
             token: token
         }).then(res => {
@@ -53,7 +53,7 @@ export default class Requests extends Component {
     reject(e) {
         const username = e.target.id;
         const token = localStorage.getItem('token')
-        axios.post('http://localhost:5000/user/reject', {
+        axios.post(url.API_URL+'/user/reject', {
             username: username,
             token: token
         }).then(res => {

@@ -12,7 +12,7 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-const uri = 'mongodb+srv://frankiewang:Uw1FzTeVkn5iRgVu@user-irypa.mongodb.net/CIS197?retryWrites=true&w=majority';
+const uri = process.env.ATLAS_URI;
 mongoose.connect(uri || process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false}
 );
 const connection = mongoose.connection;

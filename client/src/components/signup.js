@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios'
+import url from '../Constants'
 export default class Signup extends Component {
     constructor(props) {
         super(props)
@@ -40,7 +41,7 @@ export default class Signup extends Component {
         e.preventDefault()
         const { username, password, verify } = this.state
         if (password === verify) {
-            axios.post('http://localhost:5000/user/signup', {
+            axios.post(url.API_URL+'/user/signup', {
                 username: username,
                 password: password
             })

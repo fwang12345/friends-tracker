@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Navbar from './navbar'
+import url from '../Constants'
 export default class Search extends Component {
     constructor(props) {
         super(props)
@@ -14,12 +15,12 @@ export default class Search extends Component {
         const token = localStorage.getItem('token')
         if (token && username) {
             localStorage.removeItem('search')
-            axios.post('http://localhost:5000/user/search', {
+            axios.post(url.API_URL+'/user/search', {
                 username: username,
                 token: token
             }).then(res => {
                 if (res.data.success) {
-                    axios.post('http://localhost:5000/user/find', {
+                    axios.post(url.API_URL+'/user/find', {
                         username: token
                     }).then(user => {
                         var requests = user.data.user.requests;
@@ -46,7 +47,7 @@ export default class Search extends Component {
     request(e) {
         const username = e.target.id;
         const token = localStorage.getItem('token')
-        axios.post('http://localhost:5000/user/request', {
+        axios.post(url.API_URL+'/user/request', {
             username: username,
             token: token
         }).then(res => {
