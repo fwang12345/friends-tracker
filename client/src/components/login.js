@@ -52,7 +52,6 @@ export default class Login extends Component {
         }).then(res => {
             if (res.data.success) {
                 localStorage.setItem('token', res.data.username);
-                console.log(localStorage.getItem('token'))
                 this.props.history.push('/home')
             } else {
                 alert(res.data.message)

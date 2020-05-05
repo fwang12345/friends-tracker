@@ -110,7 +110,6 @@ router.route('/search').post((req, res) => {
 
 router.route('/request').post((req, res) => {
   const { username, token } = req.body;
-  console.log(username)
   User.findOneAndUpdate({
     username: username
   }, {
