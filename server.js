@@ -7,13 +7,13 @@ const proxy = require('http-proxy-middleware')
 require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 8080;
 
 app.use(cors());
 app.use(express.json());
 
 const uri = 'mongodb+srv://frankiewang:Uw1FzTeVkn5iRgVu@user-irypa.mongodb.net/CIS197?retryWrites=true&w=majority';
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false}
+mongoose.connect(uri || process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false}
 );
 const connection = mongoose.connection;
 connection.once('open', () => {
@@ -37,5 +37,5 @@ app.listen(port, () => {
 
 module.exports = function(app) {
   // add other server routes to path array
-  app.use(proxy(['/api' ], { target: 'http://localhost:5000' }));
+  app.use(proxy(['/api' ], { target: `http://localhost:${port}` }));
 }

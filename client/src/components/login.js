@@ -45,7 +45,7 @@ export default class Login extends Component {
         var username = this.state.username;
         var password = this.state.password;
         this.setState({ username: '', password: '', disabled: true })
-        axios.post('/api/user/login', {
+        axios.post('/user/login', {
             username: username,
             password: password
         }).then(res => {
