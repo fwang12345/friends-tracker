@@ -63,7 +63,7 @@ export default class Search extends Component {
         const { users } = this.state
         const arr = Object.keys(users)
         return (
-            <div>
+            <div className="root">
                 <Navbar history={this.props.history}/>
                 <div className="container">
                 <table className="table table-dark">

@@ -7,10 +7,14 @@ background-repeat: no-repeat;
 height: 100%;
 font-family: 'Numans', sans-serif;
 }
+.root,#root {
+    height: 90.8%;
+}
 .container{
 margin-top: 50px;
 height: 100%;
 align-content: center;
+overflow-y: scroll
 }
 
 .card{
@@ -38,7 +42,16 @@ cursor: pointer;
 .card-header h3{
 color: white;
 }
-
+.overflow {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.overflow-msg {
+    position: relative;
+    overflow-y:scroll;
+    display: flex;
+    flex-direction: column-reverse;
+}
 .social_icon{
 position: absolute;
 right: 20px;
@@ -105,4 +118,194 @@ margin-left: 4px;
 
 .prepend {
     padding: .36rem .20rem;
+}
+
+.main-section h3, .main-section h5{
+	margin: 18.5px 70px;
+}
+.main-section{
+	width: 100%;
+    height: 100%;
+	background-color: #fff;
+    margin: auto; 
+}
+.head-section{
+	border-bottom:1px solid #E6E6E6;
+	clear: both;
+	overflow: hidden;
+	width: 100%;
+}
+.headLeft-section{
+	width: calc(30% - 1px);
+	float: left;
+	border-right:1px solid #E6E6E6;
+}
+.headLeft-sub{
+	padding: 15px;
+	text-align: center;
+}
+.headLeft-sub input{
+	width: 70%;
+	border-radius: 0px;
+	border:1px solid #E6E6E6;
+	padding: 7px;
+}
+.headLeft-sub button{
+	background: #009EF7;
+	color: #fff;
+	border:1px solid #E6E6E6;
+	padding: 7px 15px;
+}
+.headRight-section{
+	width: 70%;
+	float: left;
+}
+
+.body-section{
+	clear: both;
+	overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+.left-section{
+    width: calc(30% - 1px);
+    height: 100%;
+	float: left;
+	border-right:1px solid #E6E6E6;
+	background-color: #FFF;
+	z-index: 1;
+	position: relative;
+}
+.left-section ul{
+	padding: 0px;
+	margin: 0px;
+	list-style: none;
+}
+.left-section ul li{
+	padding: 15px 0px;
+	cursor: pointer;
+}
+.left-section ul li.active{
+	background: #009EF7;
+	color: #fff;
+	position: relative;
+}
+.left-section ul li.active:before{
+	position: absolute;
+	content: '';
+	right: -10px;
+	border:5px solid #009EF7;
+	top: 0px;
+	bottom: 0px;
+	border-radius: 0px 3px 3px 0px;
+}
+.left-section ul li.active:after{
+  position: absolute;
+  content: "";
+  bottom: 0px;
+  right: 0px;
+  left: auto;
+  width: 100%;
+  top: 0px;
+  -webkit-box-shadow: -8px 4px 10px #a1a1a1;
+  -moz-box-shadow: -8px 4px 10px #a1a1a1;
+  box-shadow: -8px 4px 10px #a1a1a1;
+}
+
+.left-section .chatList{
+	overflow: hidden;
+}
+.left-section .chatList .desc{
+    margin-left: 5%;
+	float: left;
+	position: relative;
+}
+.right-section{
+    width: 70%;
+    height: 100%;
+	float: left;
+	background-color: #F6F6F6;
+	position: relative;
+}
+.message{
+	height: calc(100% - 68px);
+	font-family: sans-serif;
+}
+.message ul{
+	padding: 0px;
+	list-style: none;
+	margin: 0px auto;
+	width: 90%;
+	overflow:hidden;
+}
+.message ul li{
+	position: relative;
+	width: 80%;
+	padding: 15px 0px;
+	clear: both;
+}
+.message ul li.msg-left{
+	float: left;
+}
+.message ul li.msg-left .msg-desc{
+	margin-left: 10px;
+	font-size: 12px;
+	background: #E8E8E8;
+	padding: 5px 10px;
+	border-radius: 5px 5px 5px 0px;
+	position: relative;
+}
+.message ul li.msg-left .msg-desc:before{
+	position: absolute;
+	content: '';
+	border:10px solid transparent;
+	border-bottom-color: #E8E8E8;
+	bottom: 0px;
+	left: -10px;
+}
+
+.message ul li.msg-right{
+	float: right;
+}
+.message ul li.msg-right .msg-desc{
+	margin-right: 10px;
+	font-size: 12px;
+	background: #cce5ff;
+	color: #004085;
+	padding:5px 10px;
+	border-radius: 5px 5px 5px 0px;
+	position: relative;
+}
+.message ul li.msg-right .msg-desc:before{
+	position: absolute;
+	content: '';
+	border:10px solid transparent;
+	border-bottom-color: #cce5ff;
+	bottom: 0px;
+	right: -10px;
+}
+.right-section-bottom{
+	background: #fff;
+	width: 100%;
+	padding: 15px;
+	position: relative;
+	bottom: 0px;
+	border-top:1px solid #E6E6E6;
+	text-align: center;
+}
+.right-section-bottom input{
+	border:0px;
+	padding:8px 5px;
+	width:calc(100% - 150px);
+}
+.right-section-bottom .btn-send{
+	border:0px;
+	padding: 8px 10px;
+	float: right;
+	margin-right: 30px;
+	color: #009EF7;
+	font-size: 18px;
+	background: #fff;
+	cursor: pointer;
 }

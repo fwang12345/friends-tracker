@@ -70,7 +70,7 @@ export default class Requests extends Component {
     render() {
         const { requests } = this.state
         return (
-            <div>
+            <div className="root">
                 <Navbar history={this.props.history} />
                 <div className="container">
                     <table className="table table-dark">
