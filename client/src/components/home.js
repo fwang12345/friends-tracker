@@ -109,7 +109,7 @@ export default class Home extends Component {
         }).then(user => {
             if (user.data.success) {
                 messages.push({ from: token, message: message })
-                this.setState({ message: '', disabled: true });
+                this.setState({ message: '', disabled: true , change: true});
             }
         }).catch(err => console.log(err))
     }
