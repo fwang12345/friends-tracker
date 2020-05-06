@@ -40,7 +40,11 @@ export default class Home extends Component {
         }).then(user => {
             if (user.data.success) {
                 const results = user.data.results
-                this.setState({ messages: results })
+                if (this.state.messages.length == results.length) {
+                    this.setState({ messages: results})
+                } else {
+                    this.setState({ messages: results, change: true})
+                }
             }
         }).catch(err => console.log(err))
     }
