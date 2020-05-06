@@ -69,7 +69,7 @@ export default class Home extends Component {
         }).catch(err => console.log(err))
     }
     componentDidMount() {
-        //setInterval(this.getMessages, 2000);
+        setInterval(this.getMessages, 2000);
         var element = document.getElementsByClassName("message")
         element[0].scrollTop = element[0].scrollHeight
         const token = localStorage.getItem('token')
