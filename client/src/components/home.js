@@ -82,7 +82,8 @@ export default class Home extends Component {
         this.setState({ search: search })
         const { friends } = this.state
         if (search) {
-            this.setState({ results: friends.filter(x => x.toLowerCase().includes(search.toLowerCase())) })
+            search = search.toLowerCase()
+            this.setState({ results: friends.filter(x => x.toLowerCase().includes(search)) })
         }
     }
     active(e) {
