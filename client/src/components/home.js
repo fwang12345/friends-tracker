@@ -19,10 +19,27 @@ export default class Home extends Component {
         this.search = this.search.bind(this);
         this.onChange = this.onChange.bind(this);
         this.message = this.message.bind(this);
+        this.getMessages = this.getMessages.bind(this);
     }
-    componentDidMount() {
+    componentDidUpdate() {
         var element = document.getElementsByClassName("message")
         element[0].scrollTop = element[0].scrollHeight
+    }
+    getMessages() {
+        const { active } = this.state;
+        const token = localStorage.getItem('token')
+        axios.post(url.API_URL + '/message/get', {
+            from: token,
+            to: active
+        }).then(user => {
+            if (user.data.success) {
+                const results = user.data.results
+                this.setState({messages: results})
+            }
+        }).catch(err => console.log(err))
+    }
+    componentDidMount() {
+        setInterval(this.getMessages, 2000);
         const token = localStorage.getItem('token')
         if (token) {
             axios.post(url.API_URL+'/user/find', {
@@ -79,13 +96,14 @@ export default class Home extends Component {
     message(e) {
         e.preventDefault()
         const token = localStorage.getItem('token')
-        const { active, message } = this.state;
+        const { active, message, messages} = this.state;
         axios.post(url.API_URL+'/message/add', {
             from: token,
             to: active,
             message: message
         }).then(user => {
             if (user.data.success) {
+                messages.push({from: token, message: message})
                 this.setState({message: '', disabled: true});
             }
         }).catch(err => console.log(err))
