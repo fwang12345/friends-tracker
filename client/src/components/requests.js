@@ -72,7 +72,7 @@ export default class Requests extends Component {
         return (
             <div className="root">
                 <Navbar history={this.props.history} />
-                <div className="container">
+                <div className="container scroll">
                     <table className="table table-dark">
                         <thead>
                             <tr>

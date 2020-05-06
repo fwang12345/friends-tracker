@@ -10,13 +10,14 @@ font-family: 'Numans', sans-serif;
 .root,#root {
     height: 90.8%;
 }
-.container{
+.container {
 margin-top: 50px;
 height: 100%;
 align-content: center;
-overflow-y: scroll
 }
-
+.scroll {
+	overflow-y: scroll
+}
 .card{
 height: 370px;
 margin-top: auto;
