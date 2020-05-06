@@ -14,13 +14,32 @@ export default class Home extends Component {
             message: '',
             disabled: true,
             messages: [],
-            change: true
+            change: true,
+            limit: 50,            
         }
         this.active = this.active.bind(this);
         this.search = this.search.bind(this);
         this.onChange = this.onChange.bind(this);
         this.message = this.message.bind(this);
         this.getMessages = this.getMessages.bind(this);
+        this.scroll = this.scroll.bind(this)
+    }
+    scroll(e) {
+        var element = document.getElementsByClassName("message")
+        if (element[0].scrollTop === 0) {
+            const { active, limit } = this.state;
+            const token = localStorage.getItem('token')
+            axios.post(url.API_URL + '/message/get', {
+                from: token,
+                to: active,
+                limit: limit + 50,
+            }).then(user => {
+                if (user.data.success) {
+                    const results = user.data.results
+                    this.setState({ messages: results , limit: Math.max(results.length, limit)})
+                }
+            }).catch(err => console.log(err))
+        }
     }
     componentDidUpdate() {
         const {change} = this.state
@@ -32,15 +51,16 @@ export default class Home extends Component {
         
     }
     getMessages() {
-        const { active } = this.state;
+        const { active, limit } = this.state;
         const token = localStorage.getItem('token')
         axios.post(url.API_URL + '/message/get', {
             from: token,
-            to: active
+            to: active,
+            limit: limit,
         }).then(user => {
             if (user.data.success) {
                 const results = user.data.results
-                if (this.state.messages.length == results.length) {
+                if (this.state.messages.length === results.length) {
                     this.setState({ messages: results})
                 } else {
                     this.setState({ messages: results, change: true})
@@ -49,10 +69,11 @@ export default class Home extends Component {
         }).catch(err => console.log(err))
     }
     componentDidMount() {
-        setInterval(this.getMessages, 2000);
+        //setInterval(this.getMessages, 2000);
         var element = document.getElementsByClassName("message")
         element[0].scrollTop = element[0].scrollHeight
         const token = localStorage.getItem('token')
+        const { limit } = this.state
         if (token) {
             axios.post(url.API_URL + '/user/find', {
                 username: token
@@ -63,7 +84,8 @@ export default class Home extends Component {
                         const token = localStorage.getItem('token')
                         axios.post(url.API_URL + '/message/get', {
                             from: token,
-                            to: arr[0]
+                            to: arr[0],
+                            limit: limit
                         }).then(user => {
                             if (user.data.success) {
                                 const results = user.data.results
@@ -78,7 +100,7 @@ export default class Home extends Component {
         }
     }
     search(e) {
-        const search = e.target.value
+        var search = e.target.value
         this.setState({ search: search })
         const { friends } = this.state
         if (search) {
@@ -89,13 +111,15 @@ export default class Home extends Component {
     active(e) {
         const active = e.target.id
         const token = localStorage.getItem('token')
+        const { limit } = this.state
         axios.post(url.API_URL + '/message/get', {
             from: token,
-            to: active
+            to: active,
+            time: limit
         }).then(user => {
             if (user.data.success) {
                 const results = user.data.results
-                this.setState({ active: active, messages: results , change: this.state.active !== active})
+                this.setState({ active: active, messages: results , change: this.state.active !== active, time: Date.now()})
             }
         }).catch(err => console.log(err))
     }
@@ -113,7 +137,7 @@ export default class Home extends Component {
             message: message
         }).then(user => {
             if (user.data.success) {
-                messages.push({ from: token, message: message })
+                messages.unshift({ from: token, message: message })
                 this.setState({ message: '', disabled: true , change: true});
             }
         }).catch(err => console.log(err))
@@ -164,9 +188,9 @@ export default class Home extends Component {
                             </ul>
                         </div>
                         <div className="right-section">
-                            <div className="message overflow">
+                            <div className="message overflow" onScroll={this.scroll}>
                                 <ul>
-                                    {messages.map((message, i) =>
+                                    {messages.reduceRight((acc, message, i) => acc.concat(
                                         <div key={i}>
                                             {message.from === active && (
                                                 <li className="msg-left">
@@ -182,8 +206,8 @@ export default class Home extends Component {
                                                     </div>
                                                 </li>)
                                             }
-                                        </div>
-                                    )}
+                                        </div>)
+                                    , [])}
                                 </ul>
                             </div>
                             <div className="right-section-bottom">

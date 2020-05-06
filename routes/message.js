@@ -25,11 +25,11 @@ router.route('/add').post((req, res) => {
 })
 
 router.route('/get').post((req, res) => {
-    const { from, to } = req.body;
-    const messages = Message.find({
+    const { from, to, limit} = req.body;
+    Message.find({
         from: {$in: [from, to]},
         to: {$in: [from, to]}
-    }).sort({"createdAt": 1})
+    }).limit(limit).sort({"createdAt": -1})
     .exec((err, messages) => {
         if (err) {
             return res.send({
