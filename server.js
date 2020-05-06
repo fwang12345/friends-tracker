@@ -21,7 +21,9 @@ connection.once('open', () => {
 })
 
 const userRouter = require('./routes/user.js');
+const messageRouter = require('./routes/message.js');
 app.use('/user', userRouter);
+app.use('/message', messageRouter);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static('client/build'));

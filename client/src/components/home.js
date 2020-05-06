@@ -10,10 +10,15 @@ export default class Home extends Component {
             friends: [],
             active: '',
             search: '',
-            result: []
+            result: [],
+            message: '',
+            disabled: true,
+            messages: []
         }
         this.active = this.active.bind(this);
         this.search = this.search.bind(this);
+        this.onChange = this.onChange.bind(this);
+        this.message = this.message.bind(this);
     }
     componentDidMount() {
         var element = document.getElementsByClassName("message")
@@ -27,7 +32,17 @@ export default class Home extends Component {
                     const arr = user.data.user.friends
                     this.setState({ friends: arr})
                     if (arr.length) {
-                        this.setState({active: arr[0]})
+                        this.setState({ active: arr[0] })
+                        const token = localStorage.getItem('token')
+                        axios.post(url.API_URL + '/message/get', {
+                            from: token,
+                            to: arr[0]
+                        }).then(user => {
+                            if (user.data.success) {
+                                const results = user.data.results
+                                this.setState({messages: results})
+                            }
+                        }).catch(err => console.log(err))
                     }
                 }
             }).catch(err => console.log(err))
@@ -44,10 +59,39 @@ export default class Home extends Component {
         }
     }
     active(e) {
-        this.setState({active:e.target.id})
+        const active = e.target.id
+        this.setState({active:active})
+        const token = localStorage.getItem('token')
+        axios.post(url.API_URL+'/message/get', {
+            from: token,
+            to: active
+        }).then(user => {
+            if (user.data.success) {
+                const results = user.data.results
+                this.setState({messages: results})
+            }
+        }).catch(err => console.log(err))
+    }
+    onChange(e) {
+        const { active } = this.state
+        this.setState({message: e.target.value, disabled: !e.target.value || !active})
+    }
+    message(e) {
+        e.preventDefault()
+        const token = localStorage.getItem('token')
+        const { active, message } = this.state;
+        axios.post(url.API_URL+'/message/add', {
+            from: token,
+            to: active,
+            message: message
+        }).then(user => {
+            if (user.data.success) {
+                this.setState({message: '', disabled: true});
+            }
+        }).catch(err => console.log(err))
     }
     render() {
-        const { friends, active, search, results} = this.state;
+        const { friends, active, search, results, message, disabled, messages} = this.state;
         const arr = search ? results : friends
         return (
             <div className="root">
@@ -94,28 +138,30 @@ export default class Home extends Component {
                         <div className="right-section">
                             <div className="message overflow">
                                 <ul>
+                                {messages.map((message, i) =>
+                                <div key={i}>
+                                    {message.from === active && (
                                     <li className="msg-left">
-                                        <div className="msg-left-sub">
-                                            <div className="msg-desc">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua.
-                                            </div>
+                                        <div className="msg-desc">
+                                            {message.message}
                                         </div>
-                                    </li>
+                                    </li>)
+                                    }
+                                    {message.from !== active && (
                                     <li className="msg-right">
-                                        <div className="msg-left-sub">
-                                            <div className="msg-desc">
-                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua.
-                                            </div>
+                                        <div className="msg-desc">
+                                            {message.message}
                                         </div>
-                                    </li>
+                                    </li>)
+                                    }
+                                </div> 
+                                )}
                                 </ul>
                             </div>
                             <div className="right-section-bottom">
-                                <form>
-                                    <input type="text" name="" placeholder="Type a message..."></input>
-                                    <button className="btn-send"><i className="fas fa-paper-plane"></i></button>
+                                <form onSubmit={this.message}>
+                                    <input type="text" name="" placeholder="Type a message..." value = {message} onChange={this.onChange}></input>
+                                    <button className="btn-send" disabled={disabled}><i className="fas fa-paper-plane"></i></button>
                                 </form>
                             </div>
                         </div>
