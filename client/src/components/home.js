@@ -119,7 +119,7 @@ export default class Home extends Component {
         }).then(user => {
             if (user.data.success) {
                 const results = user.data.results
-                this.setState({ active: active, messages: results , change: this.state.active !== active, time: Date.now()})
+                this.setState({ active: active, messages: results , change: this.state.active !== active})
             }
         }).catch(err => console.log(err))
     }
