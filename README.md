@@ -11,6 +11,7 @@ Friend request functionality and request page where users can accept or reject r
 Messaging between friends
 
 # To Run
+Place .env file from submission in root directory
 ## Terminal 1
 npm install
 
