@@ -11,11 +11,13 @@ Friend request functionality and request page where users can accept or reject r
 Messaging between friends
 
 # To Run
+## Terminal 1
 npm install
 
-npm run client-install
-
 npm start
+
+## Terminal 2
+npm run client-install
 
 npm run client
 
