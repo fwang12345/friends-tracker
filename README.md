@@ -8,6 +8,7 @@ Friend request functionality and request page where users can accept or reject r
 Messaging between friends
 
 # To Run
+npm install
 npm run client-install
 npm start
 npm run client
